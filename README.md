@@ -4,7 +4,7 @@
 
 We present a **parametric formalization** in Lean 4 for **Problem 347**, establishing the existence of sequences with growth rate 2 and natural density 1. The formalization covers:
 
-1. **Barschkis (2025)**: Original construction with parameters κₙ = kₙ, α = 3/2
+1. **Barschkis (2026)**: Original construction with parameters κₙ = kₙ, α = 3/2
 2. **Bridges (2026)**: Extended construction with κₙ = kₙ², α = √3/2
 3. **Generic framework**: Proves density 1 for any EventuallyExpanding parameters
 
@@ -254,17 +254,19 @@ This separation makes it clear what is generic mathematics vs. problem-specific 
 
 ### Outstanding Technical Admits
 
-The formalization contains **2 sorrys**, both routine technical details:
+The formalization contains **2 sorrys**:
 
 **Problem347/Erdos347Instance.lean:**
 1. **Line 40** (`block_contains_scale`): Block containment proof
-   - Mathematical content: M_n is in block n by construction (straightforward)
-   - Technical issue: ~10 lines unpacking block definition
+   - Status: Deliberate placeholder
+   - Mathematical content: M_n is in block n by construction (straightforward to verify)
+   - Nature: Routine unpacking of block definition (~10 lines)
 
 **Problem347/ScaleDivergence/Scale.lean:**
 2. **Line 153** (`X_eventually_bounded_below`): Edge case for C ≥ 10
-   - Mathematical content: Bounded error term in normalization
-   - Technical issue: Explicit arithmetic calculation (~10-15 lines)
+   - Status: Open question
+   - Mathematical content: The constant C appears in the normalization factor and the bound C ≥ 10 is sufficient but not fully understood
+   - Nature: The parameter C is somewhat mysterious - the proof for C < 10 is complete, but the C ≥ 10 case requires deeper analysis of why this threshold works
 
 **Fully proven (no sorrys)**:
 - ✅ Generic engine: `BlockSystem` interface, all divergence lemmas complete
@@ -278,7 +280,7 @@ The formalization contains **2 sorrys**, both routine technical details:
 - ✅ Barschkis EventuallyExpanding proof
 - ✅ Bridges EventuallyExpanding proof
 
-The 2 admits are straightforward calculations in helper lemmas, not gaps in the main theorems.
+**Note**: The first admit is a routine placeholder; the second involves understanding a normalization constant that warrants further investigation.
 
 ---
 
