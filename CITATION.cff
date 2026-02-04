@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "Problem 347: Parametric Construction and Formal Proof"
+authors:
+  - family-names: Bridges
+    given-names: John
+date-released: 2026-02-03
+version: 1.0.0
+license: MIT
+repository-code: "https://github.com/johnbridges/erdos-problem-347-parametric"
+abstract: >
+  A parametric formalization in Lean 4 for Erdős Problem 347,
+  establishing the existence of sequences with growth rate 2 and
+  natural density 1. The formalization covers Barschkis (2025) and
+  Bridges (2026) constructions under a unified EventuallyExpanding
+  framework with a generic BlockSystem engine.
+keywords:
+  - additive combinatorics
+  - Lean 4
+  - formal verification
+  - Erdős problems
+  - natural density
+  - parametric construction
+references:
+  - type: article
+    authors:
+      - family-names: Barschkis
+        given-names: Enrique
+    title: "A Sequence with Doubling Ratio and Full-Density Subset Sums"
+    year: 2026
+    month: 1
+    date-published: 2026-01-21
+    url: "https://github.com/ebarschkis/ErdosProblem/blob/main/Problem347/347.pdf"
+    notes: "Original construction formalizing Tao's sketch for Problem 347"
