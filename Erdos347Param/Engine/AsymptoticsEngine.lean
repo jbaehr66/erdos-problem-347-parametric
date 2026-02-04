@@ -18,6 +18,7 @@
 -/
 
 import Mathlib
+import Erdos347Param.Engine.Analysis.Density
 
 namespace Erdos347Param
 
@@ -45,14 +46,10 @@ structure BlockSystem (P : Type) where
   block_contains_scale : ∀ p n, ∃ a : ℕ, a ∈ block p n ∧ scale p n ≤ (a : ℝ)
   block_finite : ∀ p n, (block p n).Finite
 
-/-- Abstract predicate: a set of naturals has natural density 1.
+/-! ## Subset Sum Definitions
 
-This is intentionally left abstract at the toolkit layer. A concrete client may
-instantiate it with a specific definition of natural density.
+`natDensityOne` is defined in Engine.Analysis.Density and imported above.
 -/
-axiom natDensityOne : Set ℕ → Prop
-
-/-! ## Subset Sum Definitions -/
 
 /-- Subset sums up to the first N blocks.
 
