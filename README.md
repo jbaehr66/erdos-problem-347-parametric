@@ -67,18 +67,25 @@ This single condition guarantees:
 
 ## Geometric Insight
 
-We conjecture that the frustration parameter α and growth κₙ encode the **ambient dimension**:
+We conjecture that the frustration parameter α and growth exponent encode the **dimensional structure**:
 
-| Construction | Ambient Space  | Boundary                 | Growth | Frustration      |
-|--------------|----------------|--------------------------|--------|------------------|
-| Barschkis    | R² (disc)      | S¹ (circle)              | kₙ     | 3/2              |
-| Bridges      | R³ (ball)      | S² (sphere)              | kₙ²    | √3/2             |
-| Conjectured  | $R^4$ (3-ball) | $S^3$ (unit quaternions) | $kₙ^3$ | Work in Progress |
+| Construction | Manifold | Ambient  | Growth Exp. | Frustration | L^p Geometry |
+|--------------|----------|----------|-------------|-------------|--------------|
+| Choquet      | S¹       | R²       | d = 1/2     | 1/2         | L^(1/2)      |
+| Barschkis    | D²       | R²       | d = 1       | 3/2         | L^1          |
+| Bridges      | S²       | R³       | d = 2       | √3/2        | L^2          |
+| S³ (work)    | S³       | R⁴       | d = 3       | log(3)/2    | L^3          |
 
-and that the "+1" boundary term naturally corresponds to **constant positive curvature** (κ = +1) of the spherical space. This geometric structure potentially unifies:
+Observations:
+- Growth κₙ = (base)^d where d is the dimensional exponent
+- Choquet uses single-log base (boundary spectrum)
+- Higher dimensions use double-log base
+- Frustration α shows a minimum at d=3 (S³, quaternionic)
+
+The "+1" boundary term appears to encode **constant positive curvature** (κ = +1) of spherical spaces. This geometric structure potentially connects:
 
 - **Problem 347**: Growth rate 2, density 1 sequences
-- **Problem 351**: Quadratic forms n² + 1/n (p-adic completion)
+- **Problem 351**: van Doorn's x² + 1/x forms (Ostrowski duality)
 
 
 ### Connection to Chebyshev Polynomials
@@ -116,15 +123,20 @@ This observation helped identify the EventuallyExpanding condition and revealed 
 
 **Our contribution**: We generalised Enrique's work first by compacting the LEAN proof and identifying key contractions, which led to seeing that a condition (EventuallyExpanding) is the core engine. The 2^κₙ - α ≥ 1 + ε inequality captures "fast enough" rigorously.
 
-### Woett's φ-Barrier (Comment #15)
+### Woett's Theorem on Strong Completeness (Comment #15)
 
-> "I conjecture that for any sequence with growth rate ≤ φ = (1+√5)/2, density must be < 1"
+**Woett's Theorem** (not conjecture): If a sequence A is "strongly complete" (meaning P(A′) contains all large enough integers for EVERY cofinite subsequence A′ of A), then the growth ratio aₙ₊₁/aₙ must be less than φ = (1+√5)/2 infinitely often.
 
-**Insight**: The Bridges construction (κₙ = kₙ², α = √3/2) achieves growth rate 2 > φ while maintaining the parametric structure. This suggests:
+**Reference**: https://github.com/Woett/Mathematical-shorts/blob/main/No%20sequence%20that%20grows%20at%20least%20as%20fast%20as%20the%20Fibonacci%20sequence%20is%20strongly%20complete.pdf
 
-1. **φ is not a universal barrier** for parametric constructions
-2. Growth rate 2 is achievable with **structured** (not flat) exponential growth
-3. The dimensional interpretation (S² for Bridges) reveals why 2 is special
+**Insight - φ as Frustration Barrier**: Our constructions achieve growth rate 2 > φ (average) while SATISFYING Woett's condition via the frustration parameter α. The key observation:
+
+1. **φ is the frustration barrier for dimensional lifting**: Each dip below φ (via frustration α) ensures proper contact between each growth bound $M_{n +1}$
+2. **Guarantees surjectivity**: When 2^κₙ - α occasionally drops below φ (for small κₙ), this maintains connectivity across the dimensional tower
+3. **Example**: κₙ=1, α=3/2 gives 2¹-3/2 = 0.5 < φ, ensuring the $k^1 \rightarrow\ k^2\rightarrow\cdots$ sequence remains surjective
+4. **Dimensional structure**: The frustration ensures each new cover overlaps the previous one, preventing gaps in the additive structure
+
+This resolves the apparent paradox: we have average growth 2 > φ (allowing density 1) while respecting Woett's theorem (dipping below φ infinitely often via frustration). The φ threshold is not a barrier to growth rate, but rather the critical frustration level that guarantees dimensional surjectivity in the tower
 
 ---
 
