@@ -3,11 +3,17 @@ import Erdos347Param.Real.RealExtras
 
 namespace Erdos347Param.Instances.Bridges
 
-/-- Bridges's extended parameters (2026)
+/-- Bridges's extended parameters (2026) - S² construction (d = 2)
 
     Growth: k_n² (quadratic in double-log)
     Frustration: √3/2 ≈ 0.866
     Boundary: Standard +1
+
+    Dimensional structure:
+    - Exponent d = 2 (quadratic growth)
+    - Natural L^2 geometry (Euclidean baseline)
+    - Double-log base k_n ~ log log n
+    - Edge = √3 from unit diagonal in ℝ³
 
     Status: Proven (paper, PAPER_1_BARSCHKIS_EXTENSION.md)
 -/
