@@ -311,7 +311,155 @@ $$M \times N = k^2$$
 This is the dimension count of $S^1 \times S^1$ forced by the Hopf fibration.
 
 ---
+## 8.2a The Winding Norms of the Clifford Torus
 
+The Clifford Torus $CT = S^1 \times S^1$ (§8.2) carries more structure than the product
+$M \times N = k^2$ alone reveals. We show that $CT$ admits a family of norms indexed by
+the winding number of the Hopf fiber, that the $l = 0$ case recovers the Bridges 347
+parameterisation of §8.3, and that a second parameterisation at $l = 1$ structurally
+accounts for the small cases $n < M_0$.
+
+### The Orthogonality Requirement
+
+For the product $M \times N$ to define independent parameters, the two $S^1$ factors must
+be orthogonal. Rotating one factor by $e^{i\pi/2}$ gives:
+
+$$CT = S^1_1 \times i \cdot S^1_2$$
+
+The Pythagorean identity (§7) decomposes by $S^1$ factor:
+
+$$\underbrace{(x^2 + y^2)}_{S^1_1} + i^{2l} \underbrace{(w^2 + z^2)}_{S^1_2} = k^2$$
+
+We write $i^{2l}$ and not $i^2$ because $i$ is intrinsically circular: its powers trace $S^1$
+with period 4, and this circle identifies topologically with the Hopf fiber of §8.1(6).
+The exponent $2l$ is the **winding number** - an integer counting complete turns of the
+fiber. Even windings return to the real axis; odd windings ($i^1, i^3$) rotate into the
+complex plane and are invisible to the quadratic form. The norm sees $i^{2l}$ only.
+
+### Two Norm Regimes
+
+The even powers of $i$ yield two distinct real values:
+
+| Winding $2l$ | $i^{2l}$ | Norm | Geometry |
+|:---:|:---:|---|---|
+| 0 (mod 4) | $+1$ | $(x^2+y^2) + (w^2+z^2) = k^2$ | Positive definite (Lagrange) |
+| 2 (mod 4) | $-1$ | $(x^2+y^2) - (w^2+z^2) = k^2$ | Indefinite (Eisenstein) |
+
+**$l = 0$: The Archimedean norm.** Both $S^1$ factors contribute positively. This is
+Lagrange's four-square theorem: every positive integer is a sum of four squares. The
+parameter space $M \times N = k^2$ covers all $n \geq M_0$. This is the base case of §8.3.
+
+**$l = 1$: The Eisenstein norm.** The two $S^1$ factors subtract. The poloidal (inner)
+loop of $CT$ opposes the major (outer) loop. Solutions exist where the inner geometry
+dominates - precisely the regime where small primes live, since the Archimedean
+lattice at radius $r < r_0 = \sqrt{3}$ is too coarse (§8.4).
+
+### The l-Parameterisation of Bridges 347
+
+Each norm regime generates its own instance of the Bridges construction. The sign
+propagates through the entire parameter set: the correction term $+1$ that closes
+Archimedean gaps (§8.3, §9.3) becomes $-1$ in the Eisenstein regime - a contraction
+rather than an expansion.
+
+The general Bridges parameters at winding number $l$ are:
+
+$$\left(k_n^{2^{(1-2l)}},\quad \frac{\sqrt{3}}{2},\quad (-1)^l,\quad M_0 = 10\right)$$
+
+| Parameter | $l = 0$ (Archimedean) | $l = 1$ (Eisenstein) |
+|---|---|---|
+| Growth exponent $\kappa_n$ | $k_n^{2^{+1}} = k_n^2$ | $k_n^{2^{-1}} = k_n^{1/2}$ |
+| Frustration | $\sqrt{3}/2$ | $\sqrt{3}/2$ |
+| Correction | $+1$ | $-1$ |
+| Direction | outward from $M_0$ | inward from $M_0$ |
+| Growth ratio | $\to 2$ | $\to 1/\sqrt{2}$ |
+
+The seed $r_0 = \sqrt{3}$ and boundary $M_0 = 10$ are shared - they are properties of
+the Eisenstein lattice (§6, §8.4), not of the winding number. Only the exponent and the
+sign change, and both are determined by $l$ alone.
+
+**Observation (doubly exponential structure).** The growth exponents $k^2$ and $k^{1/2}$
+are $k^{2^{+1}}$ and $k^{2^{-1}}$: powers of 2 in the exponent. Two logarithms reduce the
+family to the linear parameter $s = 1 - 2l \in \{+1, -1\}$:
+
+$$\log\log(\kappa_n) = 2^s \cdot \log\log(k_n) + \text{const}$$
+
+The Erdős 347 completeness barrier (growth $\leq 2$) is a **loglog barrier** precisely
+because the exponents are themselves exponential. This doubly exponential structure
+is forced by the two $S^1$ factors of $CT$: each circle contributes one level of
+exponentiation to the growth.
+
+### Degrees of Freedom and the Barrier Reduction
+
+The two regimes do not have the same completeness barrier. The distinction arises
+from the **operator algebra** available in each regime.
+
+At $l = 0$, the positive-definite norm $(x^2+y^2) + (w^2+z^2) = k^2$ allows both $S^1$
+factors to vary independently over $\overline{\mathbb{Q}}$. Two independent circles contribute
+two degrees of freedom to the growth estimate. Two degrees of freedom support two
+levels of exponentiation, giving the doubly exponential growth $k^{2^{+1}}$ and the
+loglog barrier.
+
+At $l = 1$, the indefinite norm $(x^2+y^2) - (w^2+z^2) = k^2$ constrains the two factors:
+$w^2 + z^2 < x^2 + y^2$ always, so the parameters are coupled. The operator space
+reduces from $\overline{\mathbb{Q}}$ (algebraic closure, supporting arbitrary field extensions)
+to $\mathbb{Z}$ (integers, supporting only arithmetic). Over $\mathbb{Z}$, the second level of
+exponentiation is not available - the exponent ring does not close under logarithms.
+The effective degrees of freedom reduce from two to one, giving growth $k^{2^{-1}} =
+k^{1/2}$ and a barrier of $\sqrt{\log}$ rather than loglog.
+
+| Regime | Field | DoF | Exponent levels | Barrier |
+|---|---|---|---|---|
+| Archimedean ($l = 0$) | $\overline{\mathbb{Q}}$ | 2 | $k \to k^a \to k^{2^s}$ | loglog |
+| Eisenstein ($l = 1$) | $\mathbb{Z}$ | 1 | $k \to k^{1/2}$ | $\sqrt{\log}$ |
+
+This is the spectral content of the Weyl law: on a $d$-dimensional manifold, the
+eigenvalue counting function grows as $\lambda^{d/2}$. Each $S^1$ contributes $d = 1$,
+giving exponent $1/2$ per circle. At $l = 0$, both circles contribute independently
+($d_{\text{eff}} = 2$, exponent $2/2 = 1$ per circle, product $= k^2$). At $l = 1$, the
+subtraction couples them ($d_{\text{eff}} = 1$, exponent $1/2$, no product).
+
+### Gauss-Bonnet Complementarity
+
+The Euler characteristic of $T^2$ is zero: $\chi(T^2) = 0$. By the discrete Gauss-Bonnet
+theorem, the positive curvature on the outer surface of $CT$ (the $l = 0$ regime) and
+the negative curvature on the inner surface (the $l = 1$ regime) cancel exactly:
+
+$$\int_{CT} K\, dA = 2\pi \chi(T^2) = 0$$
+
+Coverage by one norm implies coverage by the other on the complementary set. The
+Archimedean construction covers $n \geq M_0 = 10$ (§8.3–8.5). The Eisenstein construction
+covers $2 \leq n < M_0$ - not by a separate argument, but by the topology of $CT$.
+
+The nine cases verified explicitly in §12 and Appendix B.6 are instances of the $l = 1$
+Eisenstein norm. They are not isolated checks but the first steps of the inward
+contraction from $M_0 = 10$, each forced by the $-1$ correction, dual to the outward
+$+1$ expansion of the Archimedean proof.
+
+### Connection to §12.1
+
+The regime table of §12.1 is now derived rather than conjectured:
+
+| $\kappa_n$ | Winding $l$ | Barrier | Regime |
+|---|---|---|---|
+| $k_n^{1/2}$ | $l = 1$ | $\sqrt{\log}$ | Eisenstein (inward) |
+| $k_n^1$ | threshold | loglog | Barschkis (fixed point) |
+| $k_n^2$ | $l = 0$ | loglog | Archimedean (outward) |
+
+The Barschkis construction at $\kappa_n = k_n^1$ sits at the boundary between regimes:
+it is the $s = 0$ case where the doubly exponential tower has height zero, i.e., $k^{2^0}
+= k^1$. The growth ratio is exactly 2 (the van Doorn threshold) for both the Archimedean
+and Barschkis cases; the Eisenstein case has growth ratio $< 2$ and satisfies the
+completeness criterion with margin.
+
+*The $l = 1$ parameterisation, and the mapping between the $l = 0$ and
+$l = 1$ norms, will be the subject of a companion
+paper (Bridges 2026, in preparation).
+
+The present proof does not depend on this
+extension: the Archimedean case ($l = 0$) is sufficient for $n \geq 10$, and the small
+cases are verified directly.*
+
+---
 ## 8.3 Bridge to Erdős Problem 347: Derived Parameters
 
 The parameter space $M \times N = k^2$ from §8.2 identifies directly with the growth parameter $\kappa_n = k_n^2$ of the Bridges construction. The logical spine is:
@@ -326,11 +474,11 @@ $$r_0 = \sqrt{3}$$
 
 (the Eisenstein unit norm, the single geometric seed).
 
-| Parameter | Source | Derivation |
-|-----------|--------|------------|
-| $\kappa_n = k_n^2$ | Bridge 1 (sphere condition) | $M \times N = k^2$ forced by $CT = S^1 \times S^1$ |
-| $\sqrt{3}/2$ | Bridge 2 (frustration) | $3r/k$ at symmetric stationary point, $r_0 = \sqrt{3}$ |
-| $+1$ | Bridge 4 (topological carry) | First $(2,1)$ traversal of genus-1 hole at $M_0$ |
+| Parameter | Source | Derivation                                                            |
+|-----------|--------|-----------------------------------------------------------------------|
+| $\kappa_n = k_n^2$ | Bridge 1 (sphere condition) | $M \times N = k^2$ forced by $CT = S^1 \times S^1$                    |
+| $\sqrt{3}/2$ | Bridge 2 (frustration) | $3r/k$ at symmetric stationary point, $r_0 = \sqrt{3}$                |
+| $+1$ | Bridge 4 (topological carry) | Winding number - the first $(2,1)$ traversal of genus-1 hole at $M_0$ |
 
 The Bridges-347 construction is the unique parameterisation compatible with the Lagrangian geometry of the ESC - $S^2$.
 
