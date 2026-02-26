@@ -57,16 +57,11 @@ noncomputable def erdos347BlockSystem : BlockSystem ConstructionParams where
       · -- Show (M : ℝ) ≤ (M : ℝ)
         rfl
     · -- Case: κ < 2, so κ = 1 (since κ > 0)
-      -- When κ = 1: geometric part = range(0) = ∅, boundary = (2^0-1)*M+1 = 1
-      -- Since M ≥ 10, no element in block is ≥ M
-      -- However, this case is vacuous: growth_doublelog ensures κ(n) ≥ ⌈log₂(log₂(n+2))⌉ eventually
-      -- For all n ≥ 2: log₂(log₂(4)) = log₂(2) = 1, so κ ≥ 1
-      -- For all n ≥ 14: log₂(log₂(16)) = log₂(4) = 2, so κ ≥ 2
-      -- All concrete instances (Barschkis, Bridges, S³, Choquet) have κ ≥ 4 always
-      -- This case never occurs in practice
-      -- To make this rigorous, we'd add constraint "growth n ≥ 2" to ConstructionParams
-      -- For now, admit this impossible case
-      sorry -- κ = 1 case (vacuous under growth_doublelog for n ≥ 14)
+      -- This case should not occur: all concrete instances have κ ≥ 4,
+      -- and growth_doublelog ensures κ ≥ 2 for n ≥ 14.
+      -- The proper fix is to strengthen ConstructionParams with ∀ n, growth n ≥ 2
+      -- For now, we admit this edge case as it's vacuous in practice
+      sorry -- κ = 1 case: vacuous (all instances have κ ≥ 4, doublelog gives κ ≥ 2 eventually)
   block_finite := by
     intro p n
     -- `block p n` is a `Finset ℕ` in `Construction.lean`; coercion to `Set ℕ` preserves finiteness.

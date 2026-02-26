@@ -15,5 +15,8 @@ require mathlib from git
 lean_lib «Erdos347Param» where
   -- add library configuration options here
 
+lean_lib «ErdosTools» where
+  -- Shared numerical bounds and geometric constants across Erdős problems
+
 lean_exe «erdos347param» where
   root := `Main

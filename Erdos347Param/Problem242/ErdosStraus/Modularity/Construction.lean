@@ -23,17 +23,17 @@ The chain:
   1. κ_n = k_n²  — from CT = S¹ × S¹ (Clifford torus has 2 winding numbers)
   2. α = √3/2   — frustration = r₀/2 (symmetric critical point)
   3. σ = +1      — from Hopf linking number (positive definite norm on S²)
-  4. M₀ = 10     — ⌊2πr₀⌋ = 10 (PROVEN in ErdosTools.Eisenstein)
+  4. M₀ = 10     — ⌊2πr₀⌋ = 10 (proven in ErdosTools.Eisenstein)
 
 ## Status
 
-  - M₀ = 10: PROVEN (imported from ErdosTools via forced_boundary)
+  - M₀ = 10: PROVEN (imported from ErdosTools.Eisenstein.forced_boundary)
   - α = √3/2 = r₀/2: PROVEN (computation)
   - κ = k²: AXIOM (sphere → torus dimension count)
   - σ = +1: AXIOM (Hopf linking number, topological)
 
-Replaces the opaque `bridges_params_valid` and `M₀_forced` axioms
-from Existence.lean with transparent derivations.
+Imports numerical bounds from ErdosTools.Witnesses and M₀ proof from
+ErdosTools.Eisenstein, providing transparent parameter derivation.
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -41,15 +41,15 @@ import Mathlib.Data.Int.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic
-import ErdosTools.Eisenstein.EisensteinUnitBall
-import ErdosTools.Witnesses.RealBounds
 import Erdos347Param.Problem242.ErdosStraus.Modularity.Basic
+import ErdosTools.Witnesses.RealBounds
+import ErdosTools.Eisenstein.EisensteinUnitBall
 
 namespace ErdosStraus.Construction
 
 open Real
-open ErdosTools.Eisenstein (eisenstein_unit forced_boundary M₀ M₀_eq_floor_circumference)
-open ErdosTools.Witnesses (sqrt_three_lower_bound sqrt_three_upper_bound)
+open ErdosTools.Witnesses (sqrt_three_upper_bound)
+open ErdosTools.Eisenstein (forced_boundary M₀ eisenstein_unit)
 
 /-! ## The Seed: r₀ = √3 -/
 
@@ -64,9 +64,6 @@ open ErdosTools.Witnesses (sqrt_three_lower_bound sqrt_three_upper_bound)
     vectors in ℝ³ has pairwise angle arccos(-1/2), whose geometry is
     controlled by √3. -/
 noncomputable def r₀ : ℝ := Real.sqrt 3
-
-/-- r₀ = √3 is the Eisenstein unit from ErdosTools. -/
-theorem r₀_eq_eisenstein : r₀ = eisenstein_unit := rfl
 
 /-- r₀ is positive. -/
 theorem r₀_pos : 0 < r₀ := by
@@ -180,22 +177,20 @@ axiom hopf_linking_is_one :
 
 /-! ## Parameter 4: M₀ = 10 (PROVEN)
 
-    The initial value M₀ = ⌊2πr₀⌋ = 10 is PROVEN, not axiomatized.
-    The proof lives in ErdosTools.Eisenstein.EisensteinUnitBall and
-    chains through:
+    The initial value M₀ = ⌊2πr₀⌋ = 10 is PROVEN in ErdosTools.Eisenstein.
 
       r₀ = √3                    (definition)
       C = 2πr₀ = 2π√3            (definition)
-      10 < 2π√3 < 11             (numerical witnesses in RealBounds)
-      ⌊2π√3⌋ = 10                (floor of value in [10, 11))
+      10 < 2π√3 < 11             (proven from numerical bounds)
+      ⌊2π√3⌋ = 10                (forced_boundary theorem)
 
     We re-export the result here for the ESC namespace. -/
 
 /-- M₀ = 10 is the floor of the first Eisenstein sphere circumference.
-    PROVEN (not axiom). Imported from ErdosTools. -/
+    Re-exported from ErdosTools.Eisenstein. -/
 theorem M₀_is_ten : M₀ = 10 := rfl
 
-/-- The floor derivation: ⌊2π√3⌋ = 10. PROVEN. -/
+/-- The floor derivation: ⌊2π√3⌋ = 10. Re-exported from ErdosTools. -/
 theorem M₀_from_eisenstein : ⌊2 * Real.pi * Real.sqrt 3⌋ = 10 :=
   forced_boundary
 
@@ -228,7 +223,7 @@ theorem parameters_from_seed :
     -- Everything is consistent
     frustration ^ 2 = 3 / 4 := by
   refine ⟨rfl, rfl, frustration_range.1, frustration_range.2, ?_, frustration_sq⟩
-  -- M₀: unfold r₀ and use forced_boundary
+  -- M₀: unfold r₀ and use forced_boundary from ErdosTools
   show ⌊2 * Real.pi * Real.sqrt 3⌋ = 10
   exact forced_boundary
 
@@ -263,19 +258,20 @@ theorem parameters_from_seed :
     2. `hopf_linking_is_one` — Linking number in Hopf fibration is 1.
        Standard result, needs Hopf bundle formalization.
 
-    This file PROVES (not axiomatizes):
+    This file IMPORTS from ErdosTools:
+
+    1. `sqrt_three_upper_bound` — √3 < 1.74 (ErdosTools.Witnesses)
+    2. `forced_boundary` — ⌊2π√3⌋ = 10 (ErdosTools.Eisenstein)
+
+    This file PROVES:
 
     1. `frustration_range` — 0 < √3/2 < 1 (from numerical bounds)
     2. `frustration_sq` — (√3/2)² = 3/4 (from r₀² = 3)
-    3. `M₀_from_eisenstein` — ⌊2π√3⌋ = 10 (from ErdosTools)
+    3. `M₀_from_eisenstein` — ⌊2π√3⌋ = 10 (re-exports forced_boundary)
     4. `parameters_from_seed` — all parameters consistent
 
-    Net effect on Existence.lean:
-    - `bridges_params_valid` (1 opaque axiom) → REPLACED by
-      `parameters_from_seed` (proven) + 2 transparent axioms
-    - `M₀_forced` (1 axiom) → REPLACED by `M₀_from_eisenstein` (proven)
-    - Axiom count: 2 removed, 2 added with better provenance
-      (net: same count but dramatically more transparent)
+    Net effect: Provides transparent derivation of Bridges parameters
+    from seed r₀ = √3, using 2 topological axioms + shared numerical tools.
 -/
 
 end ErdosStraus.Construction

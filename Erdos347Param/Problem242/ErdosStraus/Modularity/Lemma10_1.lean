@@ -12,6 +12,7 @@ Composition: CRT × Gap Bound × Successor = coverage ∀ n ≥ M₀
 
 import Erdos347Param.Problem242.ErdosStraus.Modularity.Basic
 import Erdos347Param.Problem242.ErdosStraus.Modularity.Existence
+import Erdos347Param.Problem242.ErdosStraus.Modularity.Construction
 import Erdos347Param.Problem242.ErdosStraus.Modularity.CRT
 import Erdos347Param.Problem242.ErdosStraus.Modularity.GapBound
 import Erdos347Param.Problem242.ErdosStraus.Modularity.Successor

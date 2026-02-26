@@ -93,10 +93,10 @@ open ErdosTools.Witnesses (pi_lower_bound pi_upper_bound)
 
     This is the fundamental scale of the Eisenstein lattice ℤ[ω].
 -/
-def eisenstein_unit : ℝ := Real.sqrt 3
+noncomputable def eisenstein_unit : ℝ := Real.sqrt 3
 
 /-- First sphere circumference: C = 2πr₀ = 2π√3 -/
-def first_sphere_circumference : ℝ :=
+noncomputable def first_sphere_circumference : ℝ :=
   2 * Real.pi * eisenstein_unit
 
 /-! ## Circumference Bounds

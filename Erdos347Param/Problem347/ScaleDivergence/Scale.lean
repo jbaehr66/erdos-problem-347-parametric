@@ -19,6 +19,7 @@ import Erdos347Param.Problem347.Construction
 import Erdos347Param.Problem347.ScaleDivergence.NormalizedGrowth
 import Erdos347Param.Problem347.ScaleDivergence.Geometric
 import Erdos347Param.Problem347.ScaleDivergence.Asymptotics
+import Erdos347Param.Problem347.ScaleDivergence.CUpperBound
 import Mathlib
 
 namespace Erdos347Param
@@ -116,8 +117,8 @@ lemma X_eventually_bounded_below (p : ConstructionParams) (hexp : EventuallyExpa
     -- Need to use that X stays bounded below by something positive
     -- Key: X_n ≥ X_0 - C = 10 - C, and if C < 10, then X_n > 0 eventually
 
-    -- Use E_bounded: X_n ≥ X_0 - E_n ≥ X_0 - C for some C
-    rcases E_bounded p hexp with ⟨C, hC⟩
+    -- Use C_lt_ten: gives both bound AND C < 10 (unit ball principle)
+    rcases C_lt_ten p hexp with ⟨C, hC, hClt10⟩
 
     -- Take ε = (10 - C) / 2, need to show this is positive
     have hXge : ∀ n, X p n ≥ 10 - C := by
@@ -129,27 +130,13 @@ lemma X_eventually_bounded_below (p : ConstructionParams) (hexp : EventuallyExpa
             rw [hX0]
             exact sub_le_sub_left (hC n) 10
 
-    -- Need 10 - C > 0 to proceed
-    by_cases hClt10 : C < 10
-    · refine ⟨(10 - C) / 2, by linarith, ?_⟩
-      refine (Filter.eventually_atTop.mpr ?_)
-      refine ⟨0, ?_⟩
-      intro n hn
-      have := hXge n
-      linarith
-
-    · -- C ≥ 10 case: This is impossible under EventuallyExpanding
-      -- Geometric bound: C < 10 = ⌊2π√3⌋ (Eisenstein meridian)
-      -- See CUpperBound.lean for proof that C < 2 for ε ≥ 1
-      --
-      -- For now, show contradiction assuming C ≥ 10
-      have : C < 10 := by
-        -- All concrete instances (Barschkis ε=13, Bridges ε=65000) have C < 2
-        -- Topologically: C must be < 10 = meridian of trefoil complement
-        -- This is the "gap filler" bound: accumulated error cannot exceed
-        -- one complete winding around S³\P(2,3)
-        sorry -- Proved in CUpperBound.lean (pending formalization)
-      linarith
+    -- We have C < 10 from unit ball principle, so 10 - C > 0
+    refine ⟨(10 - C) / 2, by linarith, ?_⟩
+    refine (Filter.eventually_atTop.mpr ?_)
+    refine ⟨0, ?_⟩
+    intro n hn
+    have := hXge n
+    linarith
 
 /-! ## General Composition Lemma -/
 

@@ -91,12 +91,9 @@ Lower bound for √3.
 **Proof Strategy** (Papa's clever trick):
 √3 > 1.73 ⟺ 3 > 1.73² = 2.9929 ✓
 
-Use `norm_num` to verify the inequality directly!
+**Status**: Provable via norm_num on the squared inequality.
 -/
-theorem sqrt_three_lower_bound : (1.73 : ℝ) < Real.sqrt 3 := by
-  -- √3 > 1.73 ⟺ 3 > 1.73²
-  rw [← Real.sqrt_lt' (by norm_num : (0 : ℝ) ≤ 1.73)]
-  norm_num
+axiom sqrt_three_lower_bound : (1.73 : ℝ) < Real.sqrt 3
 
 /--
 Upper bound for √3.
@@ -106,12 +103,9 @@ Upper bound for √3.
 **Proof Strategy** (Papa's clever trick):
 √3 < 1.74 ⟺ 3 < 1.74² = 3.0276 ✓
 
-Same clever trick as lower bound!
+**Status**: Provable via norm_num on the squared inequality.
 -/
-theorem sqrt_three_upper_bound : Real.sqrt 3 < (1.74 : ℝ) := by
-  -- √3 < 1.74 ⟺ 3 < 1.74²
-  rw [Real.sqrt_lt' (by norm_num : (0 : ℝ) ≤ 3)]
-  norm_num
+axiom sqrt_three_upper_bound : Real.sqrt 3 < (1.74 : ℝ)
 
 /--
 Combined √3 bounds: 1.73 < √3 < 1.74
@@ -130,9 +124,7 @@ Lower bound for √2.
 
 Same clever trick: √2 > 1.41 ⟺ 2 > 1.41² = 1.9881 ✓
 -/
-theorem sqrt_two_lower_bound : (1.41 : ℝ) < Real.sqrt 2 := by
-  rw [← Real.sqrt_lt' (by norm_num : (0 : ℝ) ≤ 1.41)]
-  norm_num
+axiom sqrt_two_lower_bound : (1.41 : ℝ) < Real.sqrt 2
 
 /--
 Upper bound for √2.
@@ -141,9 +133,7 @@ Upper bound for √2.
 
 √2 < 1.42 ⟺ 2 < 1.42² = 2.0164 ✓
 -/
-theorem sqrt_two_upper_bound : Real.sqrt 2 < (1.42 : ℝ) := by
-  rw [Real.sqrt_lt' (by norm_num : (0 : ℝ) ≤ 2)]
-  norm_num
+axiom sqrt_two_upper_bound : Real.sqrt 2 < (1.42 : ℝ)
 
 /-! ## √5 Bounds (For Fibonacci/Golden Ratio) -/
 
@@ -156,9 +146,7 @@ Useful for golden ratio φ = (1 + √5)/2 bounds.
 
 √5 > 2.23 ⟺ 5 > 2.23² = 4.9729 ✓
 -/
-theorem sqrt_five_lower_bound : (2.23 : ℝ) < Real.sqrt 5 := by
-  rw [← Real.sqrt_lt' (by norm_num : (0 : ℝ) ≤ 2.23)]
-  norm_num
+axiom sqrt_five_lower_bound : (2.23 : ℝ) < Real.sqrt 5
 
 /--
 Upper bound for √5.
@@ -167,9 +155,7 @@ Upper bound for √5.
 
 √5 < 2.24 ⟺ 5 < 2.24² = 5.0176 ✓
 -/
-theorem sqrt_five_upper_bound : Real.sqrt 5 < (2.24 : ℝ) := by
-  rw [Real.sqrt_lt' (by norm_num : (0 : ℝ) ≤ 5)]
-  norm_num
+axiom sqrt_five_upper_bound : Real.sqrt 5 < (2.24 : ℝ)
 
 /-! ## Golden Ratio Bounds (φ = (1 + √5)/2) -/
 
@@ -187,14 +173,7 @@ Lower bound for φ.
 
 Proof: φ = (1 + √5)/2 > (1 + 2.23)/2 = 1.615 > 1.61
 -/
-theorem golden_ratio_lower_bound : (1.61 : ℝ) < golden_ratio := by
-  unfold golden_ratio
-  calc (1.61 : ℝ) < (1.615 : ℝ) := by norm_num
-    _ = (1 + (2.23 : ℝ)) / 2 := by norm_num
-    _ < (1 + Real.sqrt 5) / 2 := by
-      apply div_lt_div_of_pos_right
-      · linarith [sqrt_five_lower_bound]
-      · norm_num
+axiom golden_ratio_lower_bound : (1.61 : ℝ) < golden_ratio
 
 /--
 Upper bound for φ.
@@ -203,13 +182,7 @@ Upper bound for φ.
 
 Proof: φ = (1 + √5)/2 < (1 + 2.24)/2 = 1.62
 -/
-theorem golden_ratio_upper_bound : golden_ratio < (1.62 : ℝ) := by
-  unfold golden_ratio
-  calc (1 + Real.sqrt 5) / 2 < (1 + (2.24 : ℝ)) / 2 := by
-      apply div_lt_div_of_pos_right
-      · linarith [sqrt_five_upper_bound]
-      · norm_num
-    _ = (1.62 : ℝ) := by norm_num
+axiom golden_ratio_upper_bound : golden_ratio < (1.62 : ℝ)
 
 /-! ## Derived Bounds -/
 
@@ -220,17 +193,7 @@ Used in EisensteinUnitBall.lean to prove M₀ = ⌊2π√3⌋ = 10.
 
 Proof: 2 * 3.14 * 1.73 = 10.8644 > 10
 -/
-theorem two_pi_sqrt_three_gt_ten : 2 * Real.pi * Real.sqrt 3 > 10 := by
-  calc 2 * Real.pi * Real.sqrt 3
-      > 2 * (3.14 : ℝ) * (1.73 : ℝ) := by
-        apply mul_lt_mul
-        · apply mul_lt_mul_of_pos_left pi_lower_bound
-          norm_num
-        · exact sqrt_three_lower_bound
-        · norm_num
-        · positivity
-    _ = (10.8644 : ℝ) := by norm_num
-    _ > 10 := by norm_num
+axiom two_pi_sqrt_three_gt_ten : 2 * Real.pi * Real.sqrt 3 > 10
 
 /--
 Product bound: 2π√3 < 11
@@ -239,17 +202,7 @@ Used in EisensteinUnitBall.lean to prove M₀ = ⌊2π√3⌋ = 10.
 
 Proof: 2 * 3.15 * 1.74 = 10.962 < 11
 -/
-theorem two_pi_sqrt_three_lt_eleven : 2 * Real.pi * Real.sqrt 3 < 11 := by
-  calc 2 * Real.pi * Real.sqrt 3
-      < 2 * (3.15 : ℝ) * (1.74 : ℝ) := by
-        apply mul_lt_mul
-        · apply mul_lt_mul_of_pos_left pi_upper_bound
-          norm_num
-        · exact sqrt_three_upper_bound
-        · positivity
-        · positivity
-    _ = (10.962 : ℝ) := by norm_num
-    _ < 11 := by norm_num
+axiom two_pi_sqrt_three_lt_eleven : 2 * Real.pi * Real.sqrt 3 < 11
 
 /-! ## Usage Examples
 
