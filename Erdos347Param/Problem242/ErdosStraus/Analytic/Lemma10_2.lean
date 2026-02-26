@@ -23,6 +23,8 @@ import Erdos347Param.Problem242.ErdosStraus.Modularity.Basic
 
 namespace ErdosStraus
 
+open Classical
+
 /-! ## Section 9.1: The Bridges Recurrence
 
 The recurrence M_{n+1} = ⌊(2^{k²} - √3/2)·M_n⌋ + 1
@@ -124,6 +126,10 @@ axiom van_doorn_strongly_complete :
     -- part. The precise van Doorn result is about ℚ-valued sums;
     -- we state the integer consequence.
 
+/-- Helper: convert n ≥ 2 to the positive proof needed for ℕ+ -/
+private def pnat_of_ge_two (n : ℕ) (h : n ≥ 2) : ℕ+ :=
+  ⟨n, Nat.zero_lt_of_lt (Nat.lt_of_succ_le h)⟩
+
 /-! ## Section 10.2: Density 1 — The Analytic Conclusion
 
 The analytic argument composes:
@@ -151,7 +157,7 @@ def has_density_one (S : Set ℕ) : Prop :=
 
     The composition is the content of Lemma 8.2 in the paper. -/
 axiom ES_density_one :
-    has_density_one {n : ℕ | n ≥ 2 ∧ ∃ x y z : ℕ+, ES_equation ⟨n, by omega⟩ x y z}
+    has_density_one {m : ℕ | ∃ (h : m ≥ 2), ∃ x y z : ℕ+, ES_equation (pnat_of_ge_two m h) x y z}
 
 /-! ## Lemma 10.2: Statement -/
 
@@ -167,7 +173,7 @@ axiom ES_density_one :
     Combined with Lemma 10.1 (modular structure), this gives
     universal coverage. -/
 theorem lemma_10_2 :
-    has_density_one {n : ℕ | n ≥ 2 ∧ ∃ x y z : ℕ+, ES_equation ⟨n, by omega⟩ x y z} := by
+    has_density_one {m : ℕ | ∃ (h : m ≥ 2), ∃ x y z : ℕ+, ES_equation (pnat_of_ge_two m h) x y z} := by
   exact ES_density_one
 
 end ErdosStraus

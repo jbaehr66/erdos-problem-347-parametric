@@ -42,7 +42,7 @@ theorem gap_bound_exists (M N : ℕ+) :
 
     This is the key quantitative bound: consecutive covered values
     are separated by at most k² in the modular construction. -/
-theorem gap_bound_is_k_squared (M N : ℕ+)
+theorem gap_bound_is_k_squared (M N : ℕ+) (k_sq : ℕ)
     (h_coprime : Nat.gcd M N = 1)
     (h_product : (M : ℕ) * N = k_sq) :
     Nat.lcm M N = k_sq := by
@@ -61,6 +61,7 @@ theorem coverage_within_interval (M N : ℕ+)
   intro start
   use start
   refine ⟨le_refl _, ?_, Nat.mod_lt _ (PNat.pos M), Nat.mod_lt _ (PNat.pos N)⟩
+  have : 0 < (M : ℕ) * N := Nat.mul_pos (PNat.pos M) (PNat.pos N)
   omega
 
 end ErdosStraus

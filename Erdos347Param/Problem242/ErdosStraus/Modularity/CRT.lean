@@ -25,7 +25,11 @@ This is in Mathlib as Nat.Coprime properties. -/
     This is standard from Mathlib. -/
 theorem bezout_coprime (s M : ℤ) (h : Int.gcd s M = 1) :
     ∃ u v : ℤ, u * s + v * M = 1 := by
-  exact ⟨Int.gcdA s M, Int.gcdB s M, by rw [Int.gcd_eq_gcd_ab]; exact_mod_cast h⟩
+  use Int.gcdA s M, Int.gcdB s M
+  have eq := Int.gcd_eq_gcd_ab s M
+  rw [h] at eq
+  convert eq.symm using 1
+  ring
 
 /-! ## AXIOM 9.4: CRT Diagonal Walk
 

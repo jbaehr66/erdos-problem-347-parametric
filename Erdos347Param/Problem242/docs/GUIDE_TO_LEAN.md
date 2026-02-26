@@ -1,254 +1,210 @@
-# Guide to Reading Lean 4 Code: Problem 242 (ESC)
+# Reading Lean 4: A Mathematician's Compact Guide
 
-**For mathematicians unfamiliar with formal proof assistants**
+**For mathematicians encountering formal proof assistants**
+
+---
 
 ## What is Lean?
 
-Lean is a **proof assistant** - software that verifies mathematical proofs are correct. Unlike traditional mathematical writing, Lean proofs are:
-- **Machine-checked**: The computer verifies every step
-- **Unambiguous**: No handwaving or "it's obvious"
+Lean is a **proof assistant** - software that verifies mathematical proofs are correct. Unlike traditional papers, Lean proofs are:
+- **Machine-checked**: Every step verified by the computer
+- **Unambiguous**: No handwaving, no "clearly," no "it's obvious"
 - **Compositional**: Small lemmas build into big theorems
 
-Think of it as "executable mathematics" - the proof either compiles or it doesn't.
+Think of it as **executable mathematics**. The proof either compiles or it doesn't.
 
-## Basic Syntax
+---
 
-### Declarations
+## Reading Lean Code: The Essentials
+
+### 1. Declarations
 
 ```lean
 def my_number : ℕ := 42
 -- "Define my_number to be the natural number 42"
 
-theorem my_theorem : 2 + 2 = 4 := by
-  norm_num
+theorem my_theorem : 2 + 2 = 4 := by norm_num
 -- "Prove that 2+2=4 using numerical computation"
+
+axiom my_assumption : P
+-- "Assume P is true without proof"
 ```
 
-### Types
+**The pattern**: `keyword name : type := value`
 
-Lean is **typed** - every expression has a type:
-- `ℕ` = natural numbers (0, 1, 2, ...)
-- `ℤ` = integers (..., -1, 0, 1, ...)
-- `ℝ` = real numbers
-- `ℂ` = complex numbers
-- `Prop` = propositions (statements that can be true/false)
+### 2. Types
 
-The colon `:` means "has type":
+Every expression has a **type** (what kind of thing it is):
+
+| Type | Meaning | Example |
+|------|---------|---------|
+| `ℕ` | Natural numbers | `0, 1, 2, ...` |
+| `ℤ` | Integers | `..., -1, 0, 1, ...` |
+| `ℝ` | Real numbers | `π, √2, 0.5` |
+| `ℚ` | Rationals | `1/2, 3/4` |
+| `ℕ+` | Positive naturals | `1, 2, 3, ...` |
+| `Prop` | Propositions | `2 + 2 = 4` |
+
+**The colon `:`** means "has type":
 - `x : ℕ` means "x is a natural number"
 - `theorem_name : statement` means "this theorem proves statement"
 
-### Functions and Arrows
+### 3. Functions and Arrows
 
 ```lean
 def square (x : ℝ) : ℝ := x * x
--- "square is a function from reals to reals"
+-- "square takes a real and returns a real"
 ```
 
-The arrow `→` means "implies" or "function":
-- `P → Q` means "if P then Q"
-- `ℝ → ℝ` means "function from reals to reals"
+The arrow **`→`** means:
+- In types: "function from... to..."
+  - `ℝ → ℝ` = "function from reals to reals"
+  - `ℕ → ℕ → ℕ` = "function taking two nats, returning a nat"
+- In propositions: "implies"
+  - `P → Q` = "if P then Q"
+  - `x > 0 → x + 1 > 1` = "if x > 0 then x+1 > 1"
 
-### Proofs
+### 4. Proofs
 
-After the `:=` comes the proof. Common proof styles:
+After the `:=` comes the **proof**. Three common styles:
 
-**Direct calculation**:
+**Direct (reflexivity)**:
 ```lean
 theorem two_plus_two : 2 + 2 = 4 := rfl
--- rfl = "reflexivity" = both sides are definitionally equal
+-- Both sides compute to the same thing
 ```
 
-**Proof by tactics** (using `by`):
+**Tactic mode** (using `by`):
 ```lean
-theorem example : x > 0 → x + 1 > 1 := by
+theorem pos_succ (x : ℝ) : x > 0 → x + 1 > 1 := by
   intro h      -- Assume x > 0, call it h
-  linarith     -- Linear arithmetic solver
+  linarith     -- Solve by linear arithmetic
 ```
 
 **Sorry** (placeholder):
 ```lean
 theorem todo : big_claim := by sorry
--- "Trust me, this is true (but not proven yet)"
+-- "I claim this but haven't proven it yet"
 ```
 
-`sorry` means "I claim this is true but haven't proven it yet." It's like writing "TODO" in code.
+`sorry` = "TODO". Lean accepts it but warns you.
 
-## Reading Problem 242 Files
+---
 
-### File Organization
+## Mathematical Notation
 
-The proof is split into conceptual layers:
+### Logical Symbols
 
-**Foundation Layer** (geometric primitives):
-1. **EisensteinUnit.lean**: Defines √3 as the fundamental unit
-2. **ForcedBoundary.lean**: Proves M₀ = ⌊2π√3⌋ = 10
-3. **SphereCondition.lean**: Sphere constraint x² + y² + z² = k²
-
-**Derivation Layer** (where parameters come from):
-4. **GeometricBridges.lean**: The "four bridges" from Lagrangian
-5. **ParameterDerivation.lean**: Shows all parameters forced by √3
-6. **HopfFibration.lean**: Topological structure S³ → S²
-7. **TopologicalCarry.lean**: The +1 term as Hopf linking
-
-**Construction Layer** (the recurrence):
-8. **BridgesRecurrence.lean**: Defines M_{n+1} = ⌊(2^{k²} - √3/2)·M_n⌋ + 1
-
-**Completion Layer** (ESC proof):
-9. **Condition347Bridge.lean**: Connects to Problem 347, proves ESC
-10. **AnalyticClosure.lean**: Density criterion and holonomy
-
-### Main Theorem Location
-
-**File**: `Condition347Bridge.lean`
-**Line**: 982
-**Name**: `esc_via_contradiction`
-
-```lean
-theorem esc_via_contradiction :
-    True →
-    (∀ n : ℕ, n ≥ 2 →
-      ∃ (x y z : ℕ), x > 0 ∧ y > 0 ∧ z > 0 ∧
-      4 / (n : ℝ) = 1/x + 1/y + 1/z)
-```
-
-This reads: "For all natural numbers n ≥ 2, there exist positive natural numbers x, y, z such that 4/n = 1/x + 1/y + 1/z."
-
-That's the Erdős-Straus Conjecture!
-
-### How to Navigate
-
-**Start here**: Read file headers (the `/-! ... -/` blocks) - they explain what each file does in English.
-
-**Dependency order**:
-```
-EisensteinUnit
-    ↓
-ForcedBoundary
-    ↓
-GeometricBridges → ParameterDerivation
-    ↓
-Condition347Bridge (main theorem here!)
-```
-
-**Skip the proofs initially**: Focus on:
-1. `def` declarations (what things are)
-2. `theorem` statements (what's claimed)
-3. Comments (explanations)
-
-Come back to `by sorry` parts later - those are intentional gaps.
-
-## Common Lean Notation
-
-### Mathematical Symbols
-
-- `∀` = "for all" (universal quantifier)
-- `∃` = "there exists" (existential quantifier)
-- `→` = "implies"
-- `∧` = "and"
-- `∨` = "or"
-- `¬` = "not"
-- `↔` = "if and only if"
+| Symbol | Meaning | Example |
+|--------|---------|---------|
+| `∀` | for all | `∀ n : ℕ, n ≥ 0` |
+| `∃` | there exists | `∃ x : ℝ, x^2 = 2` |
+| `→` | implies | `P → Q` |
+| `∧` | and | `P ∧ Q` |
+| `∨` | or | `P ∨ Q` |
+| `¬` | not | `¬P` |
+| `↔` | if and only if | `P ↔ Q` |
 
 ### Operators
 
-- `x > 0` = "x is positive"
-- `x ≠ y` = "x is not equal to y"
-- `⌊x⌋` = floor of x
-- `|x|` or `‖x‖` = absolute value / norm
-- `x⁻¹` = inverse of x (1/x)
-- `x ^ n` = x to the power n
+| Symbol | Meaning |
+|--------|---------|
+| `x ≠ y` | not equal |
+| `x ≥ y` | greater or equal |
+| `⌊x⌋` | floor |
+| `⌈x⌉` | ceiling |
+| `\|x\|` | absolute value |
+| `x⁻¹` | inverse (1/x) |
+| `x ^ n` | power |
 
-### Special Notations
-
-- `(n : ℝ)` = coercion (convert n to a real number)
-- `have h : P := proof` = "let h be a proof of P"
-- `show P` = "we want to prove P"
-- `sorry` = "proof omitted (TODO)"
-
-## Example Walkthrough
-
-Let's read a simple theorem from EisensteinUnit.lean:
+### Special Notation
 
 ```lean
-/-- The Eisenstein unit is √3 -/
-def eisenstein_unit : ℝ := Real.sqrt 3
-
-theorem eisenstein_unit_squared : eisenstein_unit ^ 2 = 3 := by
-  unfold eisenstein_unit
-  exact Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 3)
+(n : ℝ)              -- Coerce n to a real number
+have h : P := proof  -- Local lemma "let h be a proof of P"
+show P               -- "We want to prove P"
+sorry                -- Proof omitted (TODO)
 ```
 
-**Translation**:
-1. "Define eisenstein_unit to be √3 (as a real number)"
-2. "Theorem: (√3)² = 3"
-3. "Proof: Unfold the definition, then use the fact that sqrt(x)² = x for x ≥ 0"
-
-The proof uses:
-- `unfold` = replace eisenstein_unit with its definition (√3)
-- `exact` = this term is exactly what we need
-- `Real.sq_sqrt` = library lemma: (√x)² = x when x ≥ 0
-- `by norm_num` = prove 0 ≤ 3 by computation
-
-## Understanding Dependencies
-
-Lean files must import what they use:
-
-```lean
-import Mathlib.Data.Real.Basic        -- Basic real number theory
-import EisensteinUnit                 -- Our eisenstein_unit definition
-```
-
-The `import` statements at the top tell you what this file depends on.
-
-## Sorries and Progress
-
-When you see `sorry`, it means:
-1. **Intentional framework**: Structure is designed, proof comes later
-2. **Blocked dependency**: Waiting for another file to finish
-3. **TODO**: Known gap to fill
-
-The project tracks sorries in STATUS.md and README.md.
-
-## Axioms vs Theorems
-
-**Theorem**: Proven from first principles (or earlier theorems)
-```lean
-theorem proven_fact : 2 + 2 = 4 := by norm_num
-```
-
-**Axiom**: Assumed without proof (fundamental postulate)
-```lean
-axiom unit_ball_principle : accumulated_error < 10
-```
-
-Axioms are RARE and LOUD - they mean "we accept this without proof." Each axiom should be justified philosophically (e.g., physical principle, topological necessity).
-
-## Tips for Reading
-
-1. **Start with comments**: The `/-! ... -/` blocks are English documentation
-2. **Read types first**: `theorem name : statement` - the statement is what matters
-3. **Skip proof details initially**: Focus on what's claimed, not how it's proven
-4. **Use the import graph**: Understand file dependencies
-5. **Look for `sorry`**: These are the gaps (explicitly marked)
-6. **Main theorem**: Always look for the "big result" (esc_via_contradiction for us)
+---
 
 ## Common Proof Tactics
 
-When you do read proofs, these tactics appear often:
+When reading `by tactic`, these are the most common:
 
-- `intro` = "assume the hypothesis"
-- `apply` = "use this lemma"
-- `rw` = "rewrite using this equation"
-- `linarith` = "solve by linear arithmetic"
-- `norm_num` = "compute numerically"
-- `simp` = "simplify using standard rules"
-- `omega` = "solve by integer arithmetic"
-- `ring` = "solve by ring algebra"
-- `field_simp` = "simplify fractions"
+| Tactic | What it does |
+|--------|--------------|
+| `intro` | "Assume the hypothesis" |
+| `apply` | "Use this lemma" |
+| `exact` | "This term is exactly the proof" |
+| `rw [h]` | "Rewrite using equation h" |
+| `unfold` | "Replace definition with its value" |
+| `simp` | "Simplify using standard rules" |
+| `norm_num` | "Compute numerically" |
+| `omega` | "Solve by integer arithmetic" |
+| `linarith` | "Solve by linear arithmetic" |
+| `ring` | "Solve by ring algebra" |
+| `field_simp` | "Simplify fractions" |
 
-## Error Messages
+Example:
+```lean
+theorem example : (x + 1)^2 = x^2 + 2*x + 1 := by ring
+-- The ring tactic knows algebra and proves it
+```
 
-If something doesn't compile, Lean gives errors like:
+---
+
+## Reading a Lean File
+
+### File Structure
+
+```lean
+/-
+Copyright notice
+-/
+
+import Mathlib.Data.Nat.Basic  -- Load dependencies
+import Mathlib.Tactic
+
+namespace MyProject             -- Group related definitions
+
+/-! ## Section Header
+    Documentation in English
+-/
+
+/-- Single-line doc for next definition -/
+def my_definition := ...
+
+theorem my_theorem : statement := by
+  -- proof here
+  sorry
+
+end MyProject
+```
+
+### Navigation Tips
+
+1. **Start with comments**: Read `/-! ... -/` blocks (English docs)
+2. **Read theorem statements first**: Focus on what's claimed (`theorem name : statement`)
+3. **Skip proofs initially**: Come back to `by ...` later
+4. **Follow imports**: Check what files depend on what
+5. **Look for sorries**: Explicit gaps to fill
+
+### Example from Problem 242
+
+```lean
+/-- The Erdős-Straus equation: 4/n = 1/x + 1/y + 1/z -/
+def ES_equation (n x y z : ℕ+) : Prop :=
+  (4 : ℚ) / n = 1 / x + 1 / y + 1 / z
+```
+
+**Translation**: "Define ES_equation as the proposition that 4/n equals the sum of three unit fractions."
+
+---
+
+## Understanding Error Messages
+
+### Type Mismatch
 ```
 type mismatch
   x
@@ -257,145 +213,167 @@ has type
 but is expected to have type
   ℝ
 ```
+**Fix**: Use `(x : ℝ)` to convert.
 
-This means: "You gave a natural number but I needed a real number." Fix: use `(x : ℝ)` to convert.
-
-## Building the Project
-
-```bash
-cd /Users/johnbridges/Dropbox/codeprojects/erdos347/347_param
-lake build Erdos347Param.Problem242
+### Unknown Identifier
 ```
-
-If it compiles: ✅ All sorries are marked, types check, logic is valid
-If it fails: ❌ Syntax error, type error, or missing import
-
-## Further Resources
-
-**Lean 4 Documentation**: https://lean-lang.org/lean4/doc/
-**Mathlib Docs**: https://leanprover-community.github.io/mathlib4_docs/
-**Theorem Proving in Lean**: https://leanprover.github.io/theorem_proving_in_lean4/
-
-## Project-Specific Conventions
-
-### Namespaces
-
-All Problem 242 code lives in the `ErdosStraus` namespace:
-```lean
-namespace ErdosStraus
-  -- definitions and theorems here
-end ErdosStraus
+unknown identifier 'foo'
 ```
+**Fix**: Import the file that defines `foo`.
 
-To use something from another namespace:
-```lean
-import Erdos347Param.Problem347.Construction
-open Erdos347Param  -- Now can write M instead of Erdos347Param.M
+### Timeout
 ```
-
-### Naming Conventions
-
-- **Definitions**: `snake_case` (e.g., `eisenstein_unit`, `first_sphere_circumference`)
-- **Theorems**: descriptive names (e.g., `forced_boundary`, `esc_via_contradiction`)
-- **Variables**: single letters (e.g., `n`, `k`) or short names (e.g., `ha` for "hypothesis about a")
-
-### Comments Style
-
-```lean
-/-!
-# Section Header
-
-Documentation about this section.
--/
-
-/-- Single-line docstring for next definition -/
-def my_def := ...
-
--- Inline comment explaining proof step
+(deterministic) timeout at 'tactic'
 ```
-
-## Reading the ESC Proof
-
-Here's a roadmap for understanding the full proof:
-
-### Step 1: The Geometric Seed (EisensteinUnit.lean)
-- Read: Definition of √3 as eisenstein_unit
-- Key theorem: eisenstein_unit_squared (proves it's really √3)
-- Takeaway: Everything starts from r₀ = √3
-
-### Step 2: The Boundary (ForcedBoundary.lean)
-- Read: M₀ definition and forced_boundary theorem
-- Key result: M₀ = ⌊2π√3⌋ = 10 (not arbitrary!)
-- Takeaway: Initial value forced by geometry
-
-### Step 3: The Parameters (ParameterDerivation.lean)
-- Read: Complete derivation chain in comments
-- Key theorem: zero_free_parameters
-- Takeaway: All parameters (k², √3/2, +1, M₀) forced by √3
-
-### Step 4: The Recurrence (BridgesRecurrence.lean)
-- Read: bridges_sequence definition
-- Key property: M_{n+1} = ⌊(2^{k²} - √3/2)·M_n⌋ + 1
-- Takeaway: This is THE construction that hits density 1
-
-### Step 5: The Bridge (Condition347Bridge.lean)
-- Read: condition_347 theorem (line 247) and esc_via_contradiction (line 982)
-- Key insight: 347's k² + 1/k structure implies ESC
-- Takeaway: If density = 1 (from 347), ESC follows by contradiction
-
-### Step 6: The Closure (AnalyticClosure.lean)
-- Read: Density criterion and holonomy zero
-- Key connection: Geometric growth ↔ analytic properties
-- Takeaway: Multiple equivalent formulations ensure correctness
-
-## Quick Reference Card
-
-| Syntax | Meaning |
-|--------|---------|
-| `def name : Type := value` | Define name as value |
-| `theorem name : statement := proof` | Prove statement |
-| `by tactic` | Prove using tactics |
-| `sorry` | Proof placeholder (TODO) |
-| `axiom name : statement` | Assume without proof |
-| `import Path.To.Module` | Load dependencies |
-| `namespace Name ... end Name` | Group related definitions |
-| `(x : Type)` | x has Type |
-| `x : Type := value` | x has Type and equals value |
-| `have h : P := pf` | Local lemma h proves P |
-| `show P` | Goal is to prove P |
-| `∀ x, P x` | For all x, P(x) holds |
-| `∃ x, P x` | There exists x such that P(x) |
-| `P → Q` | If P then Q |
-| `P ∧ Q` | P and Q |
-| `P ∨ Q` | P or Q |
-
-## Troubleshooting
-
-**"Unknown identifier"**: Import the file that defines it
-**"Type mismatch"**: Convert types with `(x : TargetType)`
-**"Failed to synthesize instance"**: Missing typeclass (like `0 < x` for Real.sqrt)
-**"Unexpected token"**: Syntax error (missing parenthesis, wrong symbol)
-**"Timeout"**: Proof too complex (break into smaller lemmas)
-
-## Philosophy
-
-Lean enforces **mathematical rigor** that humans often skip:
-- Every step must be justified
-- Every assumption must be explicit
-- Every type must be correct
-
-This catches:
-- Hidden assumptions
-- Type errors (treating ℕ as ℝ)
-- Circular reasoning
-- Scope errors
-
-The reward: **Machine-verified correctness**. If it compiles, the logic is sound.
+**Fix**: Proof too complex - break into smaller lemmas.
 
 ---
 
-**Ready to dive in?** Start with `EisensteinUnit.lean` - it's short, foundational, and shows all the basic patterns. Then follow the dependency chain up to `Condition347Bridge.lean` where the main theorem lives.
+## Axioms vs Theorems vs Sorries
 
-**Questions?** Check inline comments - every file has extensive documentation explaining the mathematics in English before diving into formal code.
+| Keyword | Meaning | Verification Status |
+|---------|---------|---------------------|
+| `theorem` | Proven from first principles | ✅ Machine-verified |
+| `axiom` | Assumed without proof | 🔶 Accepted as true |
+| `sorry` | Proof omitted (TODO) | ❌ Gap in proof |
 
-**Contributing?** Look for `sorry` markers - these are explicit TODOs where proofs are needed. Start with the simplest ones (routine calculations) before attempting the deep theorems.
+**Axioms** are rare and should have clear justification (e.g., "Ostrowski 1918", "physical principle").
+
+**Sorries** are explicit TODOs - gaps to fill later.
+
+**Theorems** are proven - the computer checked every step.
+
+---
+
+## Quick Reference Card
+
+### Syntax
+```lean
+def name : Type := value           -- Definition
+theorem name : statement := proof  -- Theorem
+axiom name : statement             -- Axiom (no proof)
+by tactic                          -- Prove using tactics
+sorry                              -- Proof placeholder
+import Path.To.Module              -- Load dependencies
+namespace Name ... end Name        -- Group definitions
+```
+
+### Types
+```lean
+(x : Type)                         -- x has Type
+x : Type := value                  -- x has Type and equals value
+```
+
+### Propositions
+```lean
+∀ x, P x                          -- For all x, P(x)
+∃ x, P x                          -- There exists x with P(x)
+P → Q                             -- If P then Q
+P ∧ Q                             -- P and Q
+P ∨ Q                             -- P or Q
+¬P                                -- Not P
+P ↔ Q                             -- P if and only if Q
+```
+
+---
+
+## Building a Lean Project
+
+```bash
+# Build the entire project
+lake build
+
+# Build a specific file
+lake build Erdos347Param.Problem242.ErdosStraus.MainTheorem
+
+# Check for errors
+lake build 2>&1 | grep "error:"
+```
+
+**If it compiles**: ✅ Types check, syntax correct, logic locally sound
+**If it fails**: ❌ Syntax error, type error, or missing import
+
+---
+
+## Navigating Problem 242
+
+### Where's the main theorem?
+**File**: `Erdos347Param/Problem242/ErdosStraus/MainTheorem.lean`
+**Line**: ~124
+**Name**: `erdos_straus`
+
+```lean
+theorem erdos_straus (n : ℕ+) (hn : n ≥ 2) :
+    ∃ x y z : ℕ+, ES_equation n x y z
+```
+
+**Translation**: "For all positive integers n ≥ 2, there exist positive integers x, y, z satisfying 4/n = 1/x + 1/y + 1/z."
+
+### Structure Overview
+```
+Problem242/ErdosStraus/
+  ├── Modularity/       # CRT, gap bounds, successor exhaustion
+  ├── Analytic/         # Density 1, van Doorn, Problem 347
+  ├── Bridge.lean       # Ostrowski capstone, connects both
+  └── MainTheorem.lean  # Q.E.D.
+```
+
+### Reading Strategy
+
+1. **Start**: `MainTheorem.lean` - see the big picture
+2. **Small cases**: Lines ~44-49 - concrete examples verified by `norm_num`
+3. **Main proof**: Line ~124 - how it composes
+4. **Deep dive**: Follow imports to `Bridge.lean`, then `Lemma10_1` and `Lemma10_2`
+
+**Don't try to read everything at once.** Start with theorem statements, then drill down.
+
+---
+
+## Philosophy: Why Lean?
+
+Lean enforces **mathematical rigor** that humans often skip:
+- Every assumption must be explicit
+- Every type must be correct
+- Every step must be justified
+
+This catches:
+- Hidden assumptions
+- Type confusions (treating ℕ as ℝ)
+- Circular reasoning
+- Scope errors
+
+**The reward**: If it compiles, the logic is sound (modulo axioms).
+
+**The caveat**: Lean verifies logic locally, not global correctness. You still need mathematical judgment to verify:
+- Axioms are reasonable
+- The formalization matches the mathematical intent
+- The theorem statement is what you meant to prove
+
+**Lean is rigorous but not magical.** It's a tool, not a replacement for mathematical thinking.
+
+---
+
+## Further Resources
+
+- **Lean 4 Manual**: https://lean-lang.org/lean4/doc/
+- **Mathlib Docs**: https://leanprover-community.github.io/mathlib4_docs/
+- **Theorem Proving in Lean 4**: https://leanprover.github.io/theorem_proving_in_lean4/
+- **Lean Zulip Chat**: https://leanprover.zulipchat.com/
+
+---
+
+## Contributing to Problem 242
+
+**Look for sorries**: Use `grep -r "sorry" Erdos347Param/Problem242/` to find gaps.
+
+**Start simple**: Routine calculations before deep theorems.
+
+**Check the paper**: `docs/erdosstrauss_v2_0.md` explains the mathematics.
+
+**Ask questions**: Comments in the code explain intent.
+
+---
+
+**Ready?** Open `MainTheorem.lean` and start reading. The theorem statement tells you what's proven. The proof tells you how. The imports tell you what it depends on. Everything else is detail.
+
+**Questions?** Every file has extensive `/-! ... -/` comments explaining the mathematics in English before diving into formal code.

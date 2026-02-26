@@ -38,7 +38,7 @@ Option 1 is cleanest. The barrier itself becomes a parameter:
       barrier_diverges : Filter.Tendsto barrier Filter.atTop Filter.atTop
 
 This is NOT blocking for ESC. The l=0 proof is self-contained.
-The l=1 path leads to RH territory (§8.2a, companion paper).
+
 
 Filed for future reference.
 

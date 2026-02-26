@@ -46,7 +46,7 @@ Cases n < M₀ = 10 handled separately by direct computation (§12). -/
 /-- The set of integers n that admit an ES solution via the
     modular construction. -/
 def modular_ES_solutions : Set ℕ :=
-  {n : ℕ | ∃ (x y z : ℕ+), ES_equation ⟨n, by omega⟩ x y z}
+  {m : ℕ | ∃ (h : m > 0), ∃ (x y z : ℕ+), ES_equation ⟨m, h⟩ x y z}
 
 /-- AXIOM 10.1: Modular coverage composition.
 
