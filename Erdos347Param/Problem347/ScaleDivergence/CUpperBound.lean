@@ -63,17 +63,16 @@ under conformal maps. Therefore C < 10 is a topological necessity.
 All concrete instances satisfy C < 10 with huge margin:
 - Barschkis (ε=13): C < 0.15
 - Bridges (ε=65000): C < 0.00003
-- S³ construction: C < 0.00003
+- k³ construction: C < 0.00003
 
 For ε ≥ 1, one can derive C < 2 from geometric analysis.
 
 **Future Work**:
 
 This may be provable in the future from:
-- Full conformal field theory on S³ = B³ ∪_{S²} B³
 - Volume preservation theorems under sphere → cube discretization
 - Topological invariants of the Eisenstein lattice
-- Meridian bounds on trefoil complement S³\P(2,3)
+
 
 For now, we take it as an axiom - a fundamental constraint on physically valid
 constructions.
